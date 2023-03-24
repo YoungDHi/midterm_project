@@ -20,7 +20,7 @@
   	</sql> -->
   	
   	<!-- List -->
-  	<select id="getBoardList" parameterType="Pager" resultType="ProductReviewDTO">
+  	<select id="getReviewList" parameterType="Pager" resultType="ProductReviewDTO">
   		SELECT * FROM(
   			SELECT ROWNUM R, PR.* FROM(
   				SELECT * FROM PRODUCTREVIEW
@@ -37,7 +37,7 @@
   	</select>
   	
   	<!-- List에 file값을 넣기위한 쿼리 -->
-  	<select id="getBoardDetail" parameterType="BbsDTO" resultMap="ProductReviewFileResult">
+  	<select id="getReviewDetail" parameterType="ReviewDTO" resultMap="ProductReviewFileResult">
   		SELECT * FROM PRODUCTREVIEW
   		LEFT JOIN
   		PRODUCTREVIEWFILES
@@ -51,6 +51,7 @@
   		<result column="WRITER" property="writer"/>
   		<result column="CONTENTS" property="contents"/>
   		<result column="REGDATE" property="regDate"/>
+  		<result column="MARK" property="mark"/>
   		<collection property="boardFileDTOs" javaType="List" ofType="BoardFileDTO">
   			<id column="FILENUM" property="fileNum"/>
   			<result column="FILENAME" property="fileName"/>
@@ -59,15 +60,15 @@
   	</resultMap>
   	
   	<!-- Add -->
-  	<insert id="setBoardAdd" parameterType="BbsDTO">
+  	<insert id="setReviewAdd" parameterType="ReviewDTO">
   		<selectKey keyProperty="num" resultType="Long" order="BEFORE">
   			SELECT PRODUCTSEQ.NEXTVAL FROM DUAL
   		</selectKey>
-  		INSERT INTO PRODUCTREVIEW (NUM, PRODUCTNUM, WRITER, CONTENTS, REGDATE)
-  		VALUES (#{num}, #{productNum},#{writer}, #{contents}, SYSDATE)
+  		INSERT INTO PRODUCTREVIEW (NUM, PRODUCTNUM, WRITER, CONTENTS, REGDATE, MARK)
+  		VALUES (#{num}, #{productNum},#{writer}, #{contents}, SYSDATE, #{mark})
   	</insert>
   	
-  	<insert id="setBoardFileAdd" parameterType="BoardFileDTO">
+  	<insert id="setReviewFileAdd" parameterType="BoardFileDTO">
   		INSERT INTO PRODUCTREVIEWFILES (FILENUM, NUM, FILENAME, ORINAME)
   		VALUES (PRODUCTSEQ.NEXTVAL, #{num}, #{fileName}, #{oriName})
   	</insert>

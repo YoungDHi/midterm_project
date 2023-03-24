@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.camp.s1.board.BbsDTO;
+import com.camp.s1.board.ReviewDTO;
 import com.camp.s1.member.MemberDTO;
 import com.camp.s1.util.Pager;
 
@@ -32,7 +33,8 @@ public class ProductReviewController {
 	@GetMapping("list")
 	public ModelAndView getBoardList(Pager pager) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("reviewList", productReviewService.getBoardList(pager));
+		List<ReviewDTO> ar = productReviewService.getReviewList(pager);
+		mv.addObject("reviewList", ar);
 		mv.setViewName("common/reviewList");
 		return mv;
 	}
@@ -42,7 +44,7 @@ public class ProductReviewController {
 		ModelAndView mv = new ModelAndView();
 		MemberDTO memberDTO = (MemberDTO)session.getAttribute("member");
 		productReviewDTO.setWriter(memberDTO.getId());
-		mv.addObject("result", productReviewService.setBoardAdd(productReviewDTO, pics, session));
+		mv.addObject("result", productReviewService.setReviewAdd(productReviewDTO, pics, session));
 		mv.setViewName("common/ajaxResult");
 		
 		return mv;

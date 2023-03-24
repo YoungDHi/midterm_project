@@ -123,6 +123,7 @@ $('#reviewList').on('click','.page-link', function(e){
 })
 
 // 별점 입력
+let rate = 0;
 $('.star').each((index, item)=>{
     $(item).on('click',()=>{
         rating(index);
@@ -130,7 +131,6 @@ $('.star').each((index, item)=>{
 })
 
 function rating(score){
-    console.log('click')
     $('.star').each((index,item)=>{
         if(index<=score){
             $(item).attr('style','color: red;')
@@ -138,8 +138,7 @@ function rating(score){
             $(item).removeAttr('style');
         }
     })
+    rate = score+1
+    $('#mark').val(rate)
 }
 
-function setStar(point){
-    $('#point').val(point)
-}

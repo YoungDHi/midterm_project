@@ -1,5 +1,6 @@
 package com.camp.s1.product.review;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.camp.s1.board.BbsDTO;
 import com.camp.s1.board.BoardFileDTO;
+import com.camp.s1.board.ReviewDTO;
 import com.camp.s1.board.ReviewService;
 import com.camp.s1.util.FileManager;
 import com.camp.s1.util.Pager;
@@ -24,26 +26,28 @@ public class ProductReviewService implements ReviewService {
 	@Autowired
 	private FileManager fileManager;
 
+	
 	@Override
-	public List<BbsDTO> getBoardList(Pager pager) throws Exception {
+	public List<ReviewDTO> getReviewList(Pager pager) throws Exception {
 		// TODO Auto-generated method stub
 		pager.setPerPage(5L);
 		pager.makeRow();
 		pager.makeNum(productReviewDAO.getTotalCount(pager));
-		List<BbsDTO> ar = productReviewDAO.getBoardList(pager);
-		ArrayList<BbsDTO> result = new ArrayList<BbsDTO>();
-		for(BbsDTO bbsDTO:ar) {
-			bbsDTO = productReviewDAO.getBoardDetail(bbsDTO);
-			result.add(bbsDTO);
+		List<ReviewDTO> ar = productReviewDAO.getReviewList(pager);
+		ArrayList<ReviewDTO> result = new ArrayList<ReviewDTO>();
+		for(ReviewDTO reviewDTO:ar) {
+			reviewDTO=productReviewDAO.getReviewDetile(reviewDTO);
+			result.add(reviewDTO);
 		}
 		
 		return result;
 	}
 
+
 	@Override
-	public int setBoardAdd(BbsDTO bbsDTO, MultipartFile[] files, HttpSession session) throws Exception {
+	public int setReviewAdd(ReviewDTO reviewDTO, MultipartFile[] files, HttpSession session) throws Exception {
 		// TODO Auto-generated method stub
-		int result = productReviewDAO.setBoardAdd(bbsDTO);
+		int result = productReviewDAO.setReviewAdd(reviewDTO);
 		
 		String realPath = session.getServletContext().getRealPath("resources/upload/product/review");
 		
@@ -53,40 +57,42 @@ public class ProductReviewService implements ReviewService {
 			if(multipartFile.isEmpty()) {
 				continue;
 			}
-			
 			String fileName = fileManager.fileSave(multipartFile, realPath);
 			
 			BoardFileDTO boardFileDTO = new BoardFileDTO();
-			boardFileDTO.setNum(bbsDTO.getNum());
+			boardFileDTO.setNum(reviewDTO.getNum());
 			boardFileDTO.setFileName(fileName);
 			boardFileDTO.setOriName(multipartFile.getOriginalFilename());
-			result = productReviewDAO.setBoardFileAdd(boardFileDTO);
-			
+			result = productReviewDAO.setReviewFileAdd(boardFileDTO);
 		}
-		
+			
 		return result;
 	}
 
+
 	@Override
-	public BbsDTO getBoardDetail(BbsDTO bbsDTO) throws Exception {
+	public ReviewDTO getReviewDetail(ReviewDTO reviewDTO) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+
 	@Override
-	public BoardFileDTO getBoardFileDetail(BoardFileDTO boardFileDTO) throws Exception {
+	public BoardFileDTO getReviewFileDetail(BoardFileDTO boardFileDTO) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+
 	@Override
-	public int setBoardUpdate(BbsDTO bbsDTO, MultipartFile[] multipartFiles, HttpSession session) throws Exception {
+	public int setReviewUpdate(BbsDTO bbsDTO, MultipartFile[] multipartFiles, HttpSession session) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
+
 	@Override
-	public int setBoardFileDelete(Long fileNum) throws Exception {
+	public int setReviewFileDelete(Long fileNum) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}
