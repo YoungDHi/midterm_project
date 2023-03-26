@@ -7,6 +7,18 @@
 		
 			<c:choose>
 			  		<c:when test="${not empty reviewList}">
+		  			<div>
+						<p>평점 평균</p>
+						<div class="starRate" id="starAvg">
+							<span class="starmark">★</span>
+							<span class="starmark">★</span>
+							<span class="starmark">★</span>
+							<span class="starmark">★</span>
+							<span class="starmark">★</span>
+						</div>
+						<p id="reviewAvg"></p>
+					</div>	
+			  			
 					  	<c:forEach items="${reviewList}" var="dto">
 						    
 						    <div class="row">
@@ -67,5 +79,40 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		makeMarkAvg()
+		function makeMarkAvg(){
+			let mark=0;
+			let markAvg=0;
+			let i=0;
+			<c:forEach items="${reviewList}" var="mark">
+				mark=mark+${mark.mark};
+				i++
+			</c:forEach>
+			markAvg=mark/i
+			$('#reviewAvg').html(markAvg)
+			$('#starAvg').attr('data-review-avg',markAvg)
+		}
+		
+		$('.starmark').each((index, item)=>{
+			console.log('click')
+			starRating(5)
+		})
+		
+		function starRating(score){
+			$('#starmark').each((index, item)=>{
+				if(index<=score){
+					$(item).attr('style','coror: red;')
+				} else {
+					$(ite,).removeAttr('style')
+				}
+			}
+		)}
+		
 	
+			
+
+		
+
+	</script>
 	
